@@ -7,13 +7,11 @@
 //
 
 import UIKit
+import AFNetworking
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
-    // OUTLETS
-    @IBOutlet weak var tweetsTableView: UITableView!
     
-    // GLOBAL VARS
+    @IBOutlet weak var tweetsTableView: UITableView!
     var tweets: [Tweet] = []
     
     override func viewDidLoad() {
@@ -21,6 +19,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
         tweetsTableView.dataSource = self
         tweetsTableView.delegate = self
+        
+        tweetsTableView.rowHeight = UITableViewAutomaticDimension
+        tweetsTableView.estimatedRowHeight = 120
         
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) in
             self.tweets = tweets
@@ -42,6 +43,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tweetsTableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
+        let thisTweet = tweets[indexPath.row]
+        cell.thisTweet = thisTweet
+        cell.profileImageView.setImageWith((thisTweet.user?.profileImageURL)!)
+        cell.usernameLabel.text = thisTweet.user?.name
+        cell.displayLabel.text = "@\((thisTweet.user?.screenName)!)"
+        cell.tweetTextLabel.text = thisTweet.text
+        
+        cell.timestampLabel.text = "\(Int((thisTweet.createdAt?.timeIntervalSinceNow.rounded())! * -1 / 60)) min"
         
         return cell
     }

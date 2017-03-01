@@ -11,11 +11,8 @@ import BDBOAuth1Manager
 
 class TwitterClient: BDBOAuth1SessionManager {
     
-    // API endpoints
     static let homeTimelineEndpoint: String = "1.1/statuses/home_timeline.json"
     static let verifyCredentialsEndpoint: String = "1.1/account/verify_credentials.json"
-    
-    // global variables
     static let baseUrl: String = "https://api.twitter.com"
     static let twitterAuthorizeURL: String = "https://api.twitter.com/oauth/authorize"
     static let twitterConsumerKey: String = "bA2xrdUaKj1WiF2t703pdCqE0"
@@ -23,7 +20,6 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     static let sharedInstance = TwitterClient(baseURL: URL.init(string: baseUrl), consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret)
     
-    // login
     var loginSuccess: (() -> ())?
     var loginFailure: ((Error) -> ())?
     
@@ -55,7 +51,6 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
-    //logout
     func logout() {
         User.currentUser = nil
         deauthorize()
@@ -82,5 +77,5 @@ class TwitterClient: BDBOAuth1SessionManager {
         }) { (URLSessionDataTask, error: Error) in
             failure(error)
         }
-}
+    }
 }
