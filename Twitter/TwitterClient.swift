@@ -13,6 +13,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     static let homeTimelineEndpoint: String = "1.1/statuses/home_timeline.json"
     static let verifyCredentialsEndpoint: String = "1.1/account/verify_credentials.json"
+    static let newTweet: String = "1.1/statuses/update.json"
     static let baseUrl: String = "https://api.twitter.com"
     static let twitterAuthorizeURL: String = "https://api.twitter.com/oauth/authorize"
     static let twitterConsumerKey: String = "bA2xrdUaKj1WiF2t703pdCqE0"
@@ -77,5 +78,18 @@ class TwitterClient: BDBOAuth1SessionManager {
         }) { (URLSessionDataTask, error: Error) in
             failure(error)
         }
+    }
+    
+    func tweetNew(status: String, failure: @escaping (Error) -> ()) {
+        let parameters = NSMutableDictionary()
+        parameters["status"] = status
+        
+        post(TwitterClient.newTweet, parameters: parameters, progress: nil, success: { (URLSessionDataTask, response: Any?) in
+            print("Tweeted. (Success)")
+        }, failure: { (URLSessionDataTask, error: Error) in
+            print("Error Tweeting: ", error)
+        })
+        
+        
     }
 }

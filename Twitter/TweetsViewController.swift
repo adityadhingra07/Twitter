@@ -58,5 +58,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBAction func onLogoutButtonClick(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) in
+            self.tweets = tweets
+            self.tweetsTableView.reloadData()
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
+    }
 
 }
