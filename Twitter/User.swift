@@ -15,6 +15,10 @@ class User: NSObject {
     var screenName: String?
     var profileImageURL: URL?
     var tagLine: String?
+    var tweetsCount: Int?
+    var followingCount: Int?
+    var followersCount: Int?
+    
     private var originalDictionary: Dictionary<String, Any>?
     
     static let userLoggedOutNotification: String = "UserLoggedOut"
@@ -55,5 +59,9 @@ class User: NSObject {
             self.profileImageURL = URL.init(string: profileURLString)
         }
         self.tagLine = dictionary["description"] as? String
+        self.tweetsCount = dictionary["statuses_count"] as? Int
+        self.followingCount = dictionary["friends_count"] as? Int
+        self.followersCount = dictionary["followers_count"] as? Int
+
     }
 }

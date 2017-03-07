@@ -11,6 +11,10 @@ import AFNetworking
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    @IBAction func profileButton(_ sender: Any) {
+        performSegue(withIdentifier: "displayProfile", sender: self)
+    }
+    
     @IBOutlet weak var tweetsTableView: UITableView!
     var tweets: [Tweet] = []
     
@@ -55,6 +59,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "displayTweet", sender: indexPath)
+        tweetsTableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     @IBAction func onLogoutButtonClick(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
     }
@@ -66,6 +75,18 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         }, failure: { (error: Error) in
             print(error.localizedDescription)
         })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "displayTweet"){
+            let vc = segue.destination as! TweetDetailViewController
+            let indexPath = sender as! IndexPath
+            vc.tweet = self.tweets[indexPath.row]
+        }
+        else if (segue.identifier == "displayProfile") {
+            let vc = segue.destination as! ProfileViewController
+            vc.user = User.currentUser
+        }
     }
 
 }
