@@ -20,6 +20,19 @@ class TweetDetailViewController: UIViewController {
     @IBOutlet weak var numRetweets: UILabel!
     @IBOutlet weak var numFav: UILabel!
     
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var retweetButton: UIButton!
+    @IBOutlet weak var replyButton: UIButton!
+    
+    @IBAction func likeBtn(_ sender: Any) {
+    }
+    
+    @IBAction func retweetBtn(_ sender: Any) {
+    }
+    
+    @IBAction func replyBtn(_ sender: Any) {
+    }
+   
     @IBAction func onImageTap(_ sender: Any) {
         performSegue(withIdentifier: "displayProfile", sender: self)
     }
@@ -47,7 +60,20 @@ class TweetDetailViewController: UIViewController {
             tweetTime.text = "\(-time/3600)h"
         }
         
-        // Do any additional setup after loading the view.
+        //retweet, like
+        if tweet!.retweeted {
+            retweetButton.setImage(UIImage(named: "retweet-icon"), for: .normal)
+        } else {
+            retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: .normal)
+        }
+        
+        if  tweet!.favorited {
+            favoriteButton.setImage(UIImage(named: "favor-icon"), for: .normal)
+        } else {
+            favoriteButton.setImage(UIImage(named: "favor-icon-red"), for: .normal)
+        }
+
+        
     }
 
     override func didReceiveMemoryWarning() {
